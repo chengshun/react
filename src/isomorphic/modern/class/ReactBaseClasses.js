@@ -21,15 +21,17 @@ var warning = require('fbjs/lib/warning');
 /**
  * Base class helpers for the updating state of a component.
  */
+ //辅助更新组件状态的基础类
 function ReactComponent(props, context, updater) {
   this.props = props;
   this.context = context;
   this.refs = emptyObject;
   // We initialize the default updater but the real one gets injected by the
   // renderer.
+  //初始化默认updater，渲染组件的时候回注入真正的updater
   this.updater = updater || ReactNoopUpdateQueue;
 }
-
+//判断是否是react组件
 ReactComponent.prototype.isReactComponent = {};
 
 /**
