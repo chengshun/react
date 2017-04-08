@@ -46,6 +46,7 @@ function shouldManageExisting(curChild, newChild) {
 /**
  * @lends `ReactMultiChildMixin`.
  */
+ //element diff
 var ReactMultiChildMixin = {
 
   enqueueMarkupAt: function(markup, insertAt) {

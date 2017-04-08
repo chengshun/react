@@ -20,6 +20,7 @@
  * Upstream version of event listener. Does not take into account specific
  * nature of platform.
  */
+ //上游的事件监听器，不用考虑具体平台性质
 var EventListener = {
   /**
    * Listens to bubbled events on a DOM node.

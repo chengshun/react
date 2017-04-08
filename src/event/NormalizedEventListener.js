@@ -25,6 +25,8 @@ var EventListener = require('EventListener');
  * @return {Event} Normalized event object.
  * @private
  */
+ //标准化事件对象
+ //修复target的兼容性问题
 function normalizeEvent(eventParam) {
   var normalized = eventParam || window.event;
   // In some browsers (OLD FF), setting the target throws an error. A good way

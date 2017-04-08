@@ -74,6 +74,7 @@ var ReactMount = {
    * @param {DOMElement} container The `container` being rendered into.
    * @param {function} renderCallback This must be called once to do the render.
    */
+   //确保渲染组件的时候，容器的滚动位置不会发生改变的钩子
   scrollMonitor: function(container, renderCallback) {
     renderCallback();
   },
@@ -85,6 +86,7 @@ var ReactMount = {
    * @param {object} TopLevelCallbackCreator
    * @private
    */
+   //顶层事件代理生成
   prepareTopLevelEvents: function(TopLevelCallbackCreator) {
     ReactEvent.ensureListening(
       ReactMount.useTouchEvents,
@@ -104,8 +106,11 @@ var ReactMount = {
    * @return {ReactComponent} Component instance rendered in `container`.
    */
   renderComponent: function(nextComponent, container) {
+    //获取contianer中已经渲染的组件
     var prevComponent = instanceByReactRootID[getReactRootID(container)];
     if (prevComponent) {
+      //如果container中已经渲染了组件，且prev和next的组件构造函数相同
+      //拿到next组件的props然后对prev的组件进行更新
       if (prevComponent.constructor === nextComponent.constructor) {
         var nextProps = nextComponent.props;
         ReactMount.scrollMonitor(container, function() {
@@ -113,14 +118,17 @@ var ReactMount = {
         });
         return prevComponent;
       } else {
+        //如果不是同一个组件的话，就清除prev组件和它的引用
         ReactMount.unmountAndReleaseReactRootNode(container);
       }
     }
-
+    //添加顶层事件代理会回调
     ReactMount.prepareTopLevelEvents(ReactEventTopLevelCallback);
-
+    //注册container，生成root id
     var reactRootID = ReactMount.registerContainer(container);
+    //通过rootID保存next组件的引用
     instanceByReactRootID[reactRootID] = nextComponent;
+    //mount next组件,并插入DOM中
     nextComponent.mountComponentIntoNode(reactRootID, container);
     return nextComponent;
   },

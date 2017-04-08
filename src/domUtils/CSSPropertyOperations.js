@@ -20,9 +20,9 @@
 "use strict";
 
 var dangerousStyleValue = require('dangerousStyleValue');
-var escapeTextForBrowser = require('escapeTextForBrowser');
-var hyphenate = require('hyphenate');
-var memoizeStringOnly = require('memoizeStringOnly');
+var escapeTextForBrowser = require('escapeTextForBrowser'); //将某些敏感字符转化为html实体,防止注入
+var hyphenate = require('hyphenate'); //将驼峰格式（abCd）转为ab-cd
+var memoizeStringOnly = require('memoizeStringOnly'); //存储字符串的对象
 
 var processStyleName = memoizeStringOnly(function(styleName) {
   return escapeTextForBrowser(hyphenate(styleName));

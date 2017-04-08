@@ -39,6 +39,7 @@ if (ExecutionEnvironment.canUseDOM) {
  * @internal
  * @license Modernizr 3.0.0pre (Custom Build) | MIT
  */
+ //检测当前执行环境时候支持事件
 function isEventSupported(eventNameSuffix, capture) {
   if (!testNode || (capture && !testNode.addEventListener)) {
     return false;

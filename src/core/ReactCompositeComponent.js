@@ -24,13 +24,14 @@ var ReactOwner = require('ReactOwner');
 var ReactPropTransferer = require('ReactPropTransferer');
 
 var invariant = require('invariant');
-var keyMirror = require('keyMirror');
+var keyMirror = require('keyMirror'); //属性名镜像，生成key value相同的对象（目前还知道有什么用，稍后知道回来补充）
 var merge = require('merge');
 var mixInto = require('mixInto');
 
 /**
  * Policies that describe methods in `ReactCompositeComponentInterface`.
  */
+//方法调用频次的描述？
 var SpecPolicy = keyMirror({
   /**
    * These methods may be defined only once by the class specification or mixin.
@@ -69,6 +70,7 @@ var SpecPolicy = keyMirror({
  * @interface ReactCompositeComponentInterface
  * @internal
  */
+ //react生命周期方法调用频次设置接口
 var ReactCompositeComponentInterface = {
 
   /**
@@ -77,6 +79,7 @@ var ReactCompositeComponentInterface = {
    * @type {array}
    * @optional
    */
+  //定义组件时，包含Mixin对象的一个数组
   mixins: SpecPolicy.DEFINE_MANY,
 
   /**
@@ -85,12 +88,13 @@ var ReactCompositeComponentInterface = {
    * @type {array}
    * @optional
    */
+  //组件定义的props
   props: SpecPolicy.DEFINE_ONCE,
 
 
 
   // ==== Definition methods ====
-
+  //在组件mounted之前调用一次，返回的值作为this.state的初始值
   /**
    * Invoked once before the component is mounted. The return value will be used
    * as the initial value of `this.state`.
@@ -107,6 +111,8 @@ var ReactCompositeComponentInterface = {
    */
   getInitialState: SpecPolicy.DEFINE_ONCE,
 
+  //使用this.props和this.state来渲染组件的结构，不能保证render调用时间和频次
+  //所以render里不能包含有副作用的代码如ajax请求
   /**
    * Uses props from `this.props` and state from `this.state` to render the
    * structure of the component.
@@ -128,7 +134,10 @@ var ReactCompositeComponentInterface = {
 
 
   // ==== Delegate methods ====
-
+  //代理方法
+  //组件已经创建还有mounted的时候调用
+  //可以包含有副作用的代码
+  //在componentWillUnmount的时候要清除事件监听之类的
   /**
    * Invoked when the component is initially created and about to be mounted.
    * This may have side effects, but any external subscriptions or data created
@@ -137,7 +146,9 @@ var ReactCompositeComponentInterface = {
    * @optional
    */
   componentWillMount: SpecPolicy.DEFINE_MANY,
-
+  //组件mounted之后调用，并且DOM已准备好?
+  //不能保证DOM节点已经在document中
+  //在这里可以做DOM处理相关的操作
   /**
    * Invoked when the component has been mounted and has a DOM representation.
    * However, there is no guarantee that the DOM node is in the document.
@@ -149,7 +160,8 @@ var ReactCompositeComponentInterface = {
    * @optional
    */
   componentDidMount: SpecPolicy.DEFINE_MANY,
-
+  //组件接受新props前调用
+  //这个阶段可以设置state
   /**
    * Invoked before the component receives new props.
    *
@@ -171,6 +183,8 @@ var ReactCompositeComponentInterface = {
    */
   componentWillReceiveProps: SpecPolicy.DEFINE_MANY,
 
+  //决定组件是否需要更新时调用
+  //更具return值决定
   /**
    * Invoked while deciding if the component should be updated as a result of
    * receiving new props and state.
@@ -188,7 +202,7 @@ var ReactCompositeComponentInterface = {
    * @optional
    */
   shouldComponentUpdate: SpecPolicy.DEFINE_ONCE,
-
+  //组件要更新前，从this.props this.state 过渡到next.props next.state
   /**
    * Invoked when the component is about to update due to a transition from
    * `this.props` and `this.state` to `nextProps` and `nextState`.
@@ -203,7 +217,7 @@ var ReactCompositeComponentInterface = {
    * @optional
    */
   componentWillUpdate: SpecPolicy.DEFINE_MANY,
-
+  //DOM元素更新之后调用
   /**
    * Invoked when the component's DOM representation has been updated.
    *
@@ -216,7 +230,7 @@ var ReactCompositeComponentInterface = {
    * @optional
    */
   componentDidUpdate: SpecPolicy.DEFINE_MANY,
-
+  //当前组件从父组件中移除，并且销毁DOM的时候调用
   /**
    * Invoked when the component is about to be removed from its parent and have
    * its DOM representation destroyed.
@@ -233,7 +247,7 @@ var ReactCompositeComponentInterface = {
 
 
   // ==== Advanced methods ====
-
+  //更新组件当前mounted的DOM
   /**
    * Updates the component's currently mounted DOM representation.
    *
@@ -265,6 +279,7 @@ var RESERVED_SPEC_KEYS = {
       }
     }
   },
+  //props类型描述map
   props: function(Constructor, props) {
     Constructor.propDeclarations = props;
   }
@@ -699,6 +714,7 @@ var ReactCompositeComponentMixin = {
    * @param {object} props
    * @private
    */
+  //验证props的私有方法
   _assertValidProps: function(props) {
     var propDeclarations = this.constructor.propDeclarations;
     var componentName = this.constructor.displayName;

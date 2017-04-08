@@ -83,16 +83,16 @@ var DEFAULT_POOLER = oneArgumentPooler;
 var addPoolingTo = function(CopyConstructor, pooler) {
   var NewKlass = CopyConstructor;
   NewKlass.instancePool = [];
-  NewKlass.getPooled = pooler || DEFAULT_POOLER;
+  NewKlass.getPooled = pooler || DEFAULT_POOLER; //getPooled用于取出实例
   if (!NewKlass.poolSize) {
-    NewKlass.poolSize = DEFAULT_POOL_SIZE;
+    NewKlass.poolSize = DEFAULT_POOL_SIZE; //poolSize用于存储缓存池大小
   }
-  NewKlass.release = standardReleaser;
+  NewKlass.release = standardReleaser; //release 用于放回实例
   return NewKlass;
 };
-
+//常用类的实例池，将类的实例存在内存中，节省实例化和释放的开销
 var PooledClass = {
-  addPoolingTo: addPoolingTo,
+  addPoolingTo: addPoolingTo, //给构造函数添加instancePool用于实例缓存
   oneArgumentPooler: oneArgumentPooler,
   twoArgumentPooler: twoArgumentPooler,
   fiveArgumentPooler: fiveArgumentPooler

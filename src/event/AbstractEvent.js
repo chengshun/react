@@ -19,8 +19,8 @@
 "use strict";
 
 var BrowserEnv = require('BrowserEnv');
-var PooledClass = require('PooledClass');
-var TouchEventUtils = require('TouchEventUtils');
+var PooledClass = require('PooledClass'); //事件池类
+var TouchEventUtils = require('TouchEventUtils');//touch事件util
 
 var throwIf = require('throwIf');
 
@@ -92,7 +92,7 @@ AbstractEvent.prototype.destructor = function() {
  * a performance optimization). These objects are instantiated frequently.
  */
 PooledClass.addPoolingTo(AbstractEvent, PooledClass.fiveArgumentPooler);
-
+//阻止冒泡，自定义的冒泡好原生冒泡
 AbstractEvent.prototype.stopPropagation = function() {
   this.isPropagationStopped = true;
   if (this.nativeEvent.stopPropagation) {

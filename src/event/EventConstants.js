@@ -25,6 +25,7 @@ var PropagationPhases = keyMirror({bubbled: null, captured: null});
 /**
  * Types of raw signals from the browser caught at the top level.
  */
+ //顶层捕获的浏览器事件原始信号类型
 var topLevelTypes = keyMirror({
   topBlur: null,
   topChange: null,

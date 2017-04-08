@@ -18,11 +18,11 @@
 
 "use strict";
 
-var BrowserEnv = require('BrowserEnv');
+var BrowserEnv = require('BrowserEnv'); //浏览器中某些属性的兼容处理方法
 var EventConstants = require('EventConstants');
 var EventPluginHub = require('EventPluginHub');
-var ExecutionEnvironment = require('ExecutionEnvironment');
-var NormalizedEventListener = require('NormalizedEventListener');
+var ExecutionEnvironment = require('ExecutionEnvironment'); //获取执行环境相关信息
+var NormalizedEventListener = require('NormalizedEventListener'); //统一事件监听?
 
 var invariant = require('invariant');
 var isEventSupported = require('isEventSupported');

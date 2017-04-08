@@ -35,7 +35,7 @@ if (__DEV__) {
   MISSING_TRANSACTION =
     'Cannot close transaction when there is none open.';
 }
-
+//事务
 /**
  * `Transaction` creates a black box that is able to wrap any method such that
  * certain invariants are maintained before and after the method is invoked

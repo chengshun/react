@@ -19,7 +19,7 @@
 "use strict";
 
 var AbstractEvent = require('AbstractEvent');
-var CallbackRegistry = require('CallbackRegistry');
+var CallbackRegistry = require('CallbackRegistry'); //回调存储、删除的plain object
 var EventPluginUtils = require('EventPluginUtils');
 var EventPropagators = require('EventPropagators');
 var ExecutionEnvironment = require('ExecutionEnvironment');

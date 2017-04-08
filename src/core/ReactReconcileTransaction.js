@@ -113,9 +113,10 @@ var TRANSACTION_WRAPPERS = [
  *
  * @class ReactReconcileTransaction
  */
+
 function ReactReconcileTransaction() {
-  this.reinitializeTransaction();
-  this.reactOnDOMReady = ReactOnDOMReady.getPooled(null);
+  this.reinitializeTransaction(); //初始化事务
+  this.reactOnDOMReady = ReactOnDOMReady.getPooled(null); //取出ReactOnDOMReady实例
 }
 
 var Mixin = {
@@ -126,6 +127,7 @@ var Mixin = {
    * @return {array<object>} List of operation wrap proceedures.
    *   TODO: convert to array<TransactionWrapper>
    */
+   //Transaction需要实现getTransactionWrappers用于获取initialize和closeAll,默认为数组
   getTransactionWrappers: function() {
     if (ExecutionEnvironment.canUseDOM) {
       return TRANSACTION_WRAPPERS;
@@ -147,7 +149,7 @@ var Mixin = {
    * instance to be resused.
    */
   destructor: function() {
-    ReactOnDOMReady.release(this.reactOnDOMReady);
+    ReactOnDOMReady.release(this.reactOnDOMReady); //释放ReactOnDOMReady实例
     this.reactOnDOMReady = null;
   }
 };

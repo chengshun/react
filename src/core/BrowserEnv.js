@@ -21,6 +21,8 @@
 /**
  * A place to share/cache browser/chrome level computations.
  */
+ //存储浏览器级别的指令
+ //获取scrollLeft和scrollTop的兼容性方法
 var BrowserEnv = {
   currentScrollLeft: 0,
   currentScrollTop: 0,
